@@ -14,6 +14,15 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int intake = 0;
+  int limit = 2000;
+  double progress = 0;
+  void addwater(int number) {
+    if (intake < limit) {
+      intake = (intake + number).clamp(0, limit);
+      progress = (intake / limit.toDouble());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -37,14 +46,16 @@ class _MyAppState extends State<MyApp> {
             SizedBox(
               height: 10,
             ),
-            CircularCustom(),
+            CircularCustom(
+              value: progress,
+            ),
             SizedBox(
               height: 10,
             ),
             ElevatedButton(
               onPressed: () {
                 setState(() {
-                  intake += 200;
+                  addwater(200);
                 });
               },
               child: Row(
@@ -58,7 +69,7 @@ class _MyAppState extends State<MyApp> {
             ElevatedButton(
               onPressed: () {
                 setState(() {
-                  intake += 500;
+                  addwater(500);
                 });
               },
               child: Row(
@@ -72,7 +83,7 @@ class _MyAppState extends State<MyApp> {
             ElevatedButton(
               onPressed: () {
                 setState(() {
-                  intake += 1000;
+                  addwater(1000);
                 });
               },
               child: Row(
@@ -90,6 +101,7 @@ class _MyAppState extends State<MyApp> {
                 onPressed: () {
                   setState(() {});
                   intake = 0;
+                  progress = 0;
                 },
                 child: Text('Reset')),
           ],
@@ -100,12 +112,12 @@ class _MyAppState extends State<MyApp> {
 }
 
 class CircularCustom extends StatelessWidget {
-  const CircularCustom({
-    super.key,
-  });
+  final double value;
+  const CircularCustom({super.key, required this.value});
 
   @override
   Widget build(BuildContext context) {
+    final percentage = (value * 100).toInt();
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -113,13 +125,13 @@ class CircularCustom extends StatelessWidget {
           height: 100,
           width: 100,
           child: CircularProgressIndicator(
-            value: 0.6,
+            value: value,
             strokeWidth: 10,
             color: Colors.white,
           ),
         ),
         Text(
-          '100%',
+          '${percentage}%',
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         )
       ],
