@@ -5,9 +5,15 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int intake = 0;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,7 +31,9 @@ class MyApp extends StatelessWidget {
           spacing: 10,
           children: [
             SizedBox(height: 10),
-            Custom_Card(),
+            Custom_Card(
+              number: intake,
+            ),
             SizedBox(
               height: 10,
             ),
@@ -34,7 +42,11 @@ class MyApp extends StatelessWidget {
               height: 10,
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  intake += 200;
+                });
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -44,7 +56,11 @@ class MyApp extends StatelessWidget {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  intake += 500;
+                });
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -54,7 +70,11 @@ class MyApp extends StatelessWidget {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  intake += 1000;
+                });
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -66,7 +86,12 @@ class MyApp extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            ElevatedButton(onPressed: () {}, child: Text('Reset')),
+            ElevatedButton(
+                onPressed: () {
+                  setState(() {});
+                  intake = 0;
+                },
+                child: Text('Reset')),
           ],
         ),
       ),
@@ -103,9 +128,8 @@ class CircularCustom extends StatelessWidget {
 }
 
 class Custom_Card extends StatelessWidget {
-  const Custom_Card({
-    super.key,
-  });
+  final int number;
+  const Custom_Card({super.key, required this.number});
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +158,7 @@ class Custom_Card extends StatelessWidget {
               height: 20,
             ),
             Text(
-              ' 0 ML',
+              ' ${number} ML',
               style: TextStyle(fontSize: 20, color: Colors.blue),
             )
           ],
